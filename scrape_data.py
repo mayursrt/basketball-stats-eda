@@ -22,5 +22,5 @@ def scrape_data(year=current_year):
 def filedownload(df):
     csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
-    href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download CSV File</a>'
+    href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download as .csv</a>'
     return href
