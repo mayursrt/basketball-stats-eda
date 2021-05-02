@@ -1,19 +1,27 @@
 import streamlit as st
 import pandas as pd
-import base64
-import matplotlib.pyplot as plt
-import seaborn as sns
-import numpy as numpy
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+# import numpy as numpy
 from scrape_data import *
 from datetime import date
+from PIL import Image
+
+title_container = st.beta_container()
+col1, col2 = st.beta_columns([1, 5])
+image = Image.open('assets/nbalogo.jpg')
+with title_container:
+    with col1:
+        st.image(image)
+    with col2:
+        st.write('# NBA Stats Explorer\n' + 'by Mayur Machhi')
 
 #Title and other information
-st.title('NBA Stats Explorer')
+
 
 st.markdown("""
-This app performs simple webscraping of NBA player stats data!
-* **Python libraries:** base64, pandas, streamlit
-* **Data source:** [Basketball-reference.com](https://www.basketball-reference.com/).
+This app shows NBA player stats data!\n
+**Data source:** [Basketball-reference.com](https://www.basketball-reference.com/).
 """)
 
 #User input on sidebar - Year Selection
@@ -41,13 +49,7 @@ st.write('Data Dimension: ' + str(filtered_df.shape[0]) + ' rows and ' + str(fil
 st.dataframe(filtered_df)
 
 # Download NBA player stats data as csv
-# def filedownload(df):
-#     csv = df.to_csv(index=False)
-#     b64 = base64.b64encode(csv.encode()).decode()  # strings <-> bytes conversions
-#     href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download CSV File</a>'
-#     return href
-
-# st.markdown(filedownload(df_selected_team), unsafe_allow_html=True)
+st.markdown(filedownload(filtered_df), unsafe_allow_html=True)
 
 # Heatmap
 # if st.button('Intercorrelation Heatmap'):
