@@ -4,7 +4,8 @@ import base64
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as numpy
-import time
+from scrape_data import *
+from datetime import date
 
 #Title and other information
 st.title('NBA Stats Explorer')
@@ -17,20 +18,10 @@ This app performs simple webscraping of NBA player stats data!
 
 #User input on sidebar - Year Selection
 st.sidebar.header('User Input Features')
-selected_year = st.sidebar.selectbox('Year', list(reversed(range(1950,2020))))
+current_year = date.today().year
+selected_year = st.sidebar.selectbox('Year', list(reversed(range(1950,current_year+1))))
 
-#Scrape data
-@st.cache
-def load_data(year=2019):
-	url = "https://www.basketball-reference.com/leagues/NBA_" + str(year) + "_per_game.html"
-	html = pd.read_html(url, header = 0)
-	df = html[0]
-	df.drop(df[df.Age == 'Age'].index, inplace=True)
-	df.fillna(0, inplace=True)
-	playerstats = df.drop(['Rk'], axis=1)
-	time.sleep(5)
-	return playerstats
-playerstats = load_data(selected_year)
+playerstats = scrape_data(selected_year)
 
 #Sidebar Team Selection
 teams_sorted = sorted(playerstats['Tm'].unique())
